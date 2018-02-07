@@ -3,9 +3,13 @@ package youssef.com.weatherretrobg;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import model.WeatherDetails;
+import java.text.DateFormat;
+
+import model.Example;
+import model.Sys;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView sunrise;
     private TextView sunsett;
     private TextView updatee;
-    private TextView thumbnaill;
+    private ImageView thumbnaill;
     private TextView condition;
     private Button asd;
     private String answer;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         humdityy = (TextView) findViewById(R.id.humidtytext);
         sunrise = (TextView) findViewById(R.id.sunrise);
         sunsett = (TextView) findViewById(R.id.sunset);
-        thumbnaill = (TextView) findViewById(R.id.thumbnailicon);
+        thumbnaill = (ImageView) findViewById(R.id.thumbnailicon);
         condition = (TextView) findViewById(R.id.condition);
 
         Retrofit retrofit=new Retrofit.Builder()
@@ -46,19 +50,24 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Apiint apiinterface=retrofit.create(Apiint.class);
-        Call<WeatherDetails> connection=apiinterface.getinfo("Cairo,Eg");
-        connection.enqueue(new Callback<WeatherDetails>() {
+        Call<Example> connection=apiinterface.getinfo("Alexandria,US");
+        connection.enqueue(new Callback<Example>() {
             @Override
-            public void onResponse(Call<WeatherDetails> call, Response<WeatherDetails> response) {
+            public void onResponse(Call<Example> call, Response<Example> response) {
 
-                cityy.setText(response.body().getCountry());
-              //  tempp.setText(response.body().getTemp());
-                presuree.setText(response.body().getPressure());
+                cityy.setText(  response.body().getName().toString()+","+response.body().getSys().getCountry().toString());
+                //thumbnaill.setImageResource(response.body().getWeather().get(0).getIcon());
+                cloudd.setText("Cloud="+response.body().getClouds().getAll().toString());
+                DateFormat df=DateFormat.getTimeInstance();
+                String sunrisse=df.format(response.body().getSys().getSunrise());
+                sunrise.setText(sunrisse);
+
+
+                ;
 
             }
-
             @Override
-            public void onFailure(Call<WeatherDetails> call, Throwable t) {
+            public void onFailure(Call<Example> call, Throwable t) {
 
             }
         });

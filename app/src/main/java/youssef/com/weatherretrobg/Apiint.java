@@ -1,9 +1,9 @@
 package youssef.com.weatherretrobg;
 
-import model.WeatherDetails;
+import model.Example;
+import model.Sys;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -11,6 +11,6 @@ import retrofit2.http.Query;
  */
 
 public interface Apiint {
-    @GET("data/2.5/weather?q=city&units=metric")
-    Call<WeatherDetails> getinfo(@Query("q") String city);
+    @GET("weather?appid=5f50c9540b0cb55aa216ec61a2d91857")
+    Call<Example> getinfo(@Query("q") String city);
 }
